@@ -90,7 +90,7 @@ class MainActivity : ComponentActivity() {
                         }
                         Button(
                             onClick = {},
-                            modifier = Modifier.padding(start = 330.dp, top = 50.dp)
+                            modifier = Modifier.padding(start = 330.dp, top = 51.dp)
                                 .background(color = Color.Transparent),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color.Transparent
