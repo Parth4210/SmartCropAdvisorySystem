@@ -45,11 +45,11 @@ class MainActivity : ComponentActivity() {
                     if (curr_time > 4 && curr_time < 12) {
                         return "Good Morning"
                     } else if (curr_time > 12 && curr_time < 4) {
-                        return "Good Afternoon"
+                        return "Good Afternoon,"
                     } else if (curr_time == 12) {
-                        return "Good Noon"
+                        return "Good Noon,"
                     } else {
-                        return "Good Evening"
+                        return "Good Evening,"
                     }
                 }
                 greet = greetings()
@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
                         TopAppBar(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(200.dp)
+                                .height(190.dp)
                                 .padding(top = 23.dp),
                             title = { Text(text = greet , fontWeight = FontWeight.Bold) },
                             colors = TopAppBarDefaults.topAppBarColors(
@@ -68,12 +68,12 @@ class MainActivity : ComponentActivity() {
                             ),
                         )
                             Text(text = name1.value,
-                                modifier = Modifier.padding(top = 80.dp, start = 17.dp),
+                                modifier = Modifier.padding(top = 85.dp, start = 17.dp),
                                 color = Color.White
                             )
                         Button(
                             onClick = {},
-                            modifier = Modifier.padding(start = 270.dp, top = 50.dp)
+                            modifier = Modifier.padding(start = 277.dp, top = 50.dp)
                                 .background(color = Color.Transparent),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color.Transparent
@@ -112,7 +112,7 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(innerPadding)
-                            .padding(20.dp),
+                            .padding(200.dp),
                         verticalArrangement = Arrangement.Top,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
