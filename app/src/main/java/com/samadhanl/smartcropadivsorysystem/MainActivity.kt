@@ -1,6 +1,7 @@
 package com.samadhanl.smartcropadivsorysystem
 
 import android.os.Bundle
+import androidx.compose.runtime.getValue
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,7 +9,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
@@ -18,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -64,10 +70,11 @@ class MainActivity : ComponentActivity() {
                 Scaffold(
                     topBar = {
                         TopAppBar(
+
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(200.dp)
-                                .padding(top = 37.dp),
+                                .height(120.dp)
+                                .padding(top = 25.dp),
                             title = { Text(text = greet , fontWeight = FontWeight.Bold) },
                             colors = TopAppBarDefaults.topAppBarColors(
                                 containerColor = Color(0xFF4A7C59),
@@ -75,12 +82,13 @@ class MainActivity : ComponentActivity() {
                             ),
                         )
                             Text(text = name1.value,
-                                modifier = Modifier.padding(top = 116.dp, start = 17.dp),
+                                modifier = Modifier.padding(top = 80.dp, start = 17.dp),
                                 color = Color.White
                             )
                         Button(
                             onClick = {},
-                            modifier = Modifier.padding(start = 277.dp, top = 82.dp)
+                            modifier = Modifier
+                                .padding(start = 277.dp, top = 55.dp)
                                 .background(color = Color.Transparent),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color.Transparent
@@ -97,7 +105,8 @@ class MainActivity : ComponentActivity() {
                         }
                         Button(
                             onClick = {},
-                            modifier = Modifier.padding(start = 335.dp, top = 82.dp)
+                            modifier = Modifier
+                                .padding(start = 335.dp, top = 55.dp)
                                 .background(color = Color.Transparent),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color.Transparent
@@ -113,10 +122,13 @@ class MainActivity : ComponentActivity() {
                         }
 
 
-                    }
+                    },
+
+
                 ) { innerPadding ->
                     Column(
                         modifier = Modifier
+                            .background(color = Color(0xFFF7F5F0))
                             .fillMaxSize()
                             .padding(innerPadding),
 
@@ -125,6 +137,37 @@ class MainActivity : ComponentActivity() {
                         verticalArrangement = Arrangement.spacedBy(-10.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
+                        Box(
+                            modifier = Modifier
+                                .background(color = Color(0xFF4A7C59))
+                                .fillMaxWidth()
+                                .height(90.dp),
+
+                        ){
+                            Column(
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(bottom = 14.dp)
+                            ){
+
+                            Card (
+                                modifier = Modifier
+                                    .height(60.dp)
+                                    .width(350.dp)
+                                    .border(
+                                        width = 2.dp,
+                                        color = Color.Transparent,
+                                        shape = RoundedCornerShape(16.dp)
+                                    ),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = Color(0xFF5C896A)
+                                )
+
+                            ){  }
+                            }
+                        }
                         WarningBanner(
                             message = "Aphid activity reported in nearby farms",
                             modifier = Modifier.padding(16.dp) //
@@ -135,8 +178,40 @@ class MainActivity : ComponentActivity() {
                         )
 
                     }
+                    //It contains the four buttons which provides the access to farmer to access the features  of the app
+                    Box(
+
+                    ){
+                    Column(modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 390.dp),
+                        horizontalAlignment = Alignment.Start,
+                        verticalArrangement = Arrangement.spacedBy(70.dp),
+                        ){
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceAround,
+                            verticalAlignment = Alignment.CenterVertically
+                        )
+                        {
+                            Small_card()
+                            Small_card()
+                        }
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceAround,
+                            verticalAlignment = Alignment.CenterVertically
+                        )
+                        {
+                            Small_card()
+                            Small_card()
+                        }
+                    }
 
 
+
+
+                    }
                 }
 
             }
@@ -184,4 +259,34 @@ fun WarningBanner(
 @Composable
 fun WarningBannerPreview() {
     WarningBanner(message = "Aphid activity reported in nearby farms")
+}
+
+
+@Composable
+fun Small_card(){
+    //Used on the dashboard page for creating the navigation buttons
+    var isClicked by remember { mutableStateOf(false) }
+
+        Card(
+            modifier = Modifier
+                .clickable { isClicked = !isClicked }
+                .width(140.dp)
+                .height(140.dp)
+                .border(
+                    width = 2.dp,
+                    color = Color.Transparent,
+                    shape = RoundedCornerShape(5.dp)
+                ),
+
+            colors = CardDefaults.cardColors(
+                containerColor = if(isClicked) Color(0xFF979797) else Color(0xFFFFFFFF)
+
+            )
+        ) {
+            Text(
+                text = "Hello",
+                modifier = Modifier.padding(10.dp)
+            )
+
+    }
 }
