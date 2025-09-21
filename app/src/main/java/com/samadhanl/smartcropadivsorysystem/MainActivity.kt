@@ -7,20 +7,27 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.io.File
@@ -43,13 +50,13 @@ class MainActivity : ComponentActivity() {
                     val curr_hour = calendar.get(Calendar.HOUR_OF_DAY)
                     curr_time = curr_hour
                     if (curr_time > 4 && curr_time < 12) {
-                        return "Good Morning"
+                        return "Good Morning,"
                     } else if (curr_time > 12 && curr_time < 4) {
-                        return "Good Afternoon"
+                        return "Good Afternoon,"
                     } else if (curr_time == 12) {
-                        return "Good Noon"
+                        return "Good Noon,"
                     } else {
-                        return "Good Evening"
+                        return "Good Evening,"
                     }
                 }
                 greet = greetings()
@@ -60,7 +67,7 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(200.dp)
-                                .padding(top = 23.dp),
+                                .padding(top = 37.dp),
                             title = { Text(text = greet , fontWeight = FontWeight.Bold) },
                             colors = TopAppBarDefaults.topAppBarColors(
                                 containerColor = Color(0xFF4A7C59),
@@ -68,12 +75,12 @@ class MainActivity : ComponentActivity() {
                             ),
                         )
                             Text(text = name1.value,
-                                modifier = Modifier.padding(top = 80.dp, start = 17.dp),
+                                modifier = Modifier.padding(top = 116.dp, start = 17.dp),
                                 color = Color.White
                             )
                         Button(
                             onClick = {},
-                            modifier = Modifier.padding(start = 270.dp, top = 50.dp)
+                            modifier = Modifier.padding(start = 277.dp, top = 82.dp)
                                 .background(color = Color.Transparent),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color.Transparent
@@ -90,7 +97,7 @@ class MainActivity : ComponentActivity() {
                         }
                         Button(
                             onClick = {},
-                            modifier = Modifier.padding(start = 330.dp, top = 51.dp)
+                            modifier = Modifier.padding(start = 335.dp, top = 82.dp)
                                 .background(color = Color.Transparent),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color.Transparent
@@ -111,15 +118,70 @@ class MainActivity : ComponentActivity() {
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(innerPadding)
-                            .padding(20.dp),
-                        verticalArrangement = Arrangement.Top,
+                            .padding(innerPadding),
+
+                        // these are the fucking modifiers to move the fucking banner
+
+                        verticalArrangement = Arrangement.spacedBy(-10.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
+                        WarningBanner(
+                            message = "Aphid activity reported in nearby farms",
+                            modifier = Modifier.padding(16.dp) //
+                        )
+                        WarningBanner(
+                            message = "Heavy rain expected in 10 days",
+                            modifier = Modifier.padding(16.dp)
+                        )
 
                     }
+
+
                 }
+
             }
         }
     }
+}
+
+@Composable
+fun WarningBanner(
+    message: String,
+    modifier: Modifier = Modifier
+) {
+    val backgroundColor = Color(0xFFFFF7F0)
+    val borderColor = Color(0xFFE69A8D)
+    val contentColor = Color(0xFF8B4513)
+
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
+            .border(
+                width = 1.dp,
+                color = borderColor,
+                shape = RoundedCornerShape(12.dp)
+            )
+            .background(backgroundColor)
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Default.Warning,
+            contentDescription = "Warning Icon",
+            tint = contentColor,
+            modifier = Modifier.size(24.dp)
+        )
+        Text(
+            text = message,
+            color = contentColor
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun WarningBannerPreview() {
+    WarningBanner(message = "Aphid activity reported in nearby farms")
 }
