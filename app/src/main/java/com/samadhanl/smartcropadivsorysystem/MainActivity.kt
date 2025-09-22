@@ -11,6 +11,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Arrangement.SpaceAround
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -33,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.android.gms.internal.base.zaq
 import com.samadhanl.smartcropadivsorysystem.ui.theme.SmartCropAdivsorySystemTheme
 import java.util.Calendar
 
@@ -191,16 +193,33 @@ class MainActivity : ComponentActivity() {
 //                        Spacer(modifier = Modifier.size(30.dp))
                         item{
 
-                                Row(modifier = Modifier.fillMaxSize()
-                                    .padding(top = 20.dp),
-                                    horizontalArrangement = Arrangement.Center,
-                                    verticalAlignment = Alignment.CenterVertically) {
-                                    Crop_recommendation_card(
-                                        "AI Crop Recommendations",
+                            Row(modifier = Modifier.fillMaxSize()
+                                .padding(top = 20.dp),
+                                horizontalArrangement = Arrangement.Center,
+                                verticalAlignment = Alignment.CenterVertically) {
+                                Crop_recommendation_card(
+                                    "AI Crop Recommendations",
 
-                                        )
+                                    )
 
                             }
+                        }
+                        item{
+                            Row(modifier = Modifier.fillMaxSize()
+                                .padding(top = 20.dp),
+                                horizontalArrangement = Arrangement.Center,
+                                verticalAlignment = Alignment.CenterVertically) {
+                                Market_price_card()
+
+                            }
+                        }
+                        item{
+                            Row(modifier = Modifier.fillMaxSize()
+                                .padding(top = 20.dp),
+                                horizontalArrangement = Arrangement.Center,
+                                verticalAlignment = Alignment.CenterVertically){
+                                Footer_btns()
+                        }
                         }
                     }
                 }
@@ -346,7 +365,7 @@ fun Small_card(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            verticalArrangement = Arrangement.SpaceAround
+            verticalArrangement = SpaceAround
         ) {
             Box(
                 modifier = Modifier
@@ -379,8 +398,19 @@ fun Small_card(
 fun Crop_recommendation_card(
     title: String,
 ) {
+    @Composable
+    fun Small_brown_card(){
+        Card(
+            modifier = Modifier
+                .width(350.dp)
+                .height(120.dp)
+                .padding(top = 20.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color(0xFFE8E4DC)
+            )
+        ){}
+    }
     val context = LocalContext.current
-    var isClicked by remember { mutableStateOf(false) }
 
     // the clicking feature of the buttons
     // and
@@ -389,19 +419,12 @@ fun Crop_recommendation_card(
     Card(
         modifier = Modifier
             .padding(8.dp)
-            .clickable {
-                isClicked = !isClicked
-                Toast
-                    //after clicking it shows the temp notification.
-                    .makeText(context, "$title Clicked", Toast.LENGTH_SHORT)
-                    .show()
-            }
-            .width(360.dp)
-            .height(500.dp),
+            .width(368.dp)
+            .height(422.dp),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(
-            containerColor = if (isClicked) Color(0xFFE0E0E0) else Color.White
+            containerColor = Color.White
         )
     ) {
         Column(
@@ -409,15 +432,143 @@ fun Crop_recommendation_card(
                 .fillMaxSize()
                 .padding(16.dp),
 
-        ) {
-            Column {
+            ) {
+            Row {
+                Image(
+                    painter = painterResource(id = R.drawable.sprout),
+                    contentDescription = "Crop image",
+                    modifier = Modifier.size(20.dp),
+                    colorFilter = ColorFilter.tint(Color(0xFF4B7D5A))
+
+                )
                 Text(
+                    modifier = Modifier.padding(start = 15.dp),
                     text = title,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    color = Color.Black
-                )
+                    fontSize = 22.sp,
+                    color = Color.Black,
+
+                    )
             }
+            Column{
+                Small_brown_card()
+                Small_brown_card()
+                Small_brown_card()
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun Market_price_card() {
+    @Composable
+    fun Small_brown_card2(){
+        Card(
+            modifier = Modifier
+                .width(150.dp)
+                .height(120.dp)
+                .padding(top = 20.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color(0xFFE8E4DC)
+            )
+        ){}
+    }
+    Card(
+        modifier = Modifier
+            .padding(8.dp)
+            .width(368.dp)
+            .height(260.dp),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+
+            ) {
+            Row {
+                Image(
+                    painter = painterResource(id = R.drawable.trend),
+                    contentDescription = "Crop image",
+                    modifier = Modifier.size(20.dp),
+
+                    )
+                Text(
+                    modifier = Modifier.padding(start = 15.dp),
+                    text = "Today's Market Prices",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 22.sp,
+                    color = Color.Black,
+
+                    )
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Small_brown_card2()
+                Small_brown_card2()
+            }
+            Row(
+                modifier = Modifier.fillMaxSize()
+                    .padding(top = 20.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ){
+                Button(
+                    modifier = Modifier.width(350.dp)
+                        .height(60.dp),
+                    onClick = {},
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFF7F5F0),
+                        contentColor = Color.Black
+                    )
+                ){
+                    Text(text = "View All Prices",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 19.sp)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun Footer_btns(){
+    Row(
+        modifier = Modifier.fillMaxSize(),
+        horizontalArrangement = Arrangement.SpaceAround,
+
+    ){
+        Button(
+            onClick = {},
+            modifier = Modifier.size(130.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFF7F5F0),
+                contentColor = Color.Black
+            )
+        ){
+            Text(text = "Help & FeedBack",
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp)
+        }
+        Button(
+            onClick = {},
+            modifier = Modifier.size(130.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFF7F5F0),
+                contentColor = Color.Black
+            )
+        ){
+            Text(text = "Soil Guide",
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp)
         }
     }
 }
