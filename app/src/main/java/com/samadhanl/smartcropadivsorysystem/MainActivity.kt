@@ -42,6 +42,14 @@ data class DashboardCardItem(
     val color: Color
 )
 
+// these data classes holds the weather information
+data class WeatherData(
+    val temperature: String = "28°C",
+    val condition: String = "Partly Cloudy",
+    val humidity: String = "65%",
+    val highLow: String = "32°/24°"
+)
+
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,7 +124,14 @@ class MainActivity : ComponentActivity() {
                             .fillMaxSize()
                             .padding(innerPadding),
                         horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
+                    )
+
+                    {
+                        //The weather card
+                        item {
+                            WeatherCard(weatherData = WeatherData())
+                        }
+
                         // First Banner
                         item {
                             WarningBanner(
@@ -186,6 +201,69 @@ fun WarningBanner(message: String, modifier: Modifier = Modifier) {
             modifier = Modifier.size(24.dp)
         )
         Text(text = message, color = contentColor)
+    }
+}
+
+// This is the composable for the weather card (BASED ON LOCATION)
+
+@Composable
+fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier) {
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.Black.copy(alpha = 0.2f) // Translucent background
+        ),
+        elevation = CardDefaults.cardElevation(0.dp)
+    ) {
+        Row(
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            // Left side: Main weather info
+            Column(modifier = Modifier.weight(1f)) {
+                // You'll need to add a sun icon named `ic_weather_sun` to your drawables
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_weather_sun),
+                    contentDescription = "Weather condition",
+                    //tint = Color.White,
+                    modifier = Modifier.size(48.dp)
+                )
+                Text(
+                    text = weatherData.temperature,
+                    color = Color.White,
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = weatherData.condition,
+                    color = Color.White,
+                    fontSize = 16.sp
+                )
+            }
+
+            // Right side: Humidity and High/Low
+            Column(horizontalAlignment = Alignment.End) {
+                // Humidity
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    // Add a humidity icon: `ic_humidity`
+                        Icon(painterResource(id = R.drawable.ic_humidity), contentDescription = "Humidity", modifier = Modifier.size(20.dp))
+                    Spacer(Modifier.width(4.dp))
+                    Text(text = weatherData.humidity, color = Color.White, fontSize = 16.sp)
+                }
+                Spacer(Modifier.height(8.dp))
+                // High/Low Temp
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    // Add a thermostat icon: `ic_thermostat`
+                    Icon(painterResource(id = R.drawable.ic_thermostat), contentDescription = "High/Low temperature", modifier = Modifier.size(20.dp))
+                    Spacer(Modifier.width(4.dp))
+                    Text(text = weatherData.highLow, color = Color.White, fontSize = 16.sp)
+                }
+            }
+        }
     }
 }
 

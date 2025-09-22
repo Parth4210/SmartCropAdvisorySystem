@@ -59,7 +59,17 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
-    // In your dependencies { ... } block
+
+    //For Location Services
+
+    implementation("com.google.android.gms:play-services-location:21.2.0")
+    //
+    //// For Networking (for API calls)
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
+
+
 
 // This is for the @Preview annotation itself
     implementation("androidx.compose.ui:ui-tooling-preview")
