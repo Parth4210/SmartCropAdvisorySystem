@@ -10,6 +10,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Arrangement.SpaceAround
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -25,12 +27,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.android.gms.internal.base.zaq
 import com.samadhanl.smartcropadivsorysystem.ui.theme.SmartCropAdivsorySystemTheme
 import java.util.Calendar
 
@@ -59,10 +63,25 @@ class MainActivity : ComponentActivity() {
         // Prepare the data for the four dashboard cards
         //Icons are here
         val dashboardItems = listOf(
-            DashboardCardItem("Detect Pest", "Take photo to identify", R.drawable.camera, Color(0xFFE53935)),
-            DashboardCardItem("Soil Health", "Check soil condition", R.drawable.leaf, Color(0xFF43A047)),
+            DashboardCardItem(
+                "Detect Pest",
+                "Take photo to identify",
+                R.drawable.camera,
+                Color(0xFFE53935)
+            ),
+            DashboardCardItem(
+                "Soil Health",
+                "Check soil condition",
+                R.drawable.leaf,
+                Color(0xFF43A047)
+            ),
             DashboardCardItem("Weather", "7-day forecast", R.drawable.cloud, Color(0xFF1E88E5)),
-            DashboardCardItem("Market Prices", "Today's rates", R.drawable.market, Color(0xFF8D6E63))
+            DashboardCardItem(
+                "Market Prices",
+                "Today's rates",
+                R.drawable.market,
+                Color(0xFF8D6E63)
+            )
         )
 
         setContent {
@@ -87,7 +106,11 @@ class MainActivity : ComponentActivity() {
                         TopAppBar(
                             title = {
                                 Column {
-                                    Text(text = greet, fontWeight = FontWeight.Bold, fontSize = 22.sp)
+                                    Text(
+                                        text = greet,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 22.sp
+                                    )
                                     Text(text = name1, fontSize = 16.sp)
                                 }
                             },
@@ -152,7 +175,7 @@ class MainActivity : ComponentActivity() {
                             LazyVerticalGrid(
                                 columns = GridCells.Fixed(2),
                                 modifier = Modifier
-                                    .height(340.dp) // height for the grid area
+                                    .height(360.dp) // height for the grid area
                                     .padding(8.dp),
                                 horizontalArrangement = Arrangement.Center,
                                 verticalArrangement = Arrangement.Center
@@ -166,6 +189,37 @@ class MainActivity : ComponentActivity() {
                                     )
                                 }
                             }
+                        }
+//                        Spacer(modifier = Modifier.size(30.dp))
+                        item{
+
+                            Row(modifier = Modifier.fillMaxSize()
+                                .padding(top = 20.dp),
+                                horizontalArrangement = Arrangement.Center,
+                                verticalAlignment = Alignment.CenterVertically) {
+                                Crop_recommendation_card(
+                                    "AI Crop Recommendations",
+
+                                    )
+
+                            }
+                        }
+                        item{
+                            Row(modifier = Modifier.fillMaxSize()
+                                .padding(top = 20.dp),
+                                horizontalArrangement = Arrangement.Center,
+                                verticalAlignment = Alignment.CenterVertically) {
+                                Market_price_card()
+
+                            }
+                        }
+                        item{
+                            Row(modifier = Modifier.fillMaxSize()
+                                .padding(top = 20.dp),
+                                horizontalArrangement = Arrangement.Center,
+                                verticalAlignment = Alignment.CenterVertically){
+                                Footer_btns()
+                        }
                         }
                     }
                 }
@@ -250,7 +304,11 @@ fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier) {
                 // Humidity
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     // Add a humidity icon: `ic_humidity`
-                        Icon(painterResource(id = R.drawable.ic_humidity), contentDescription = "Humidity", modifier = Modifier.size(20.dp))
+                    Icon(
+                        painterResource(id = R.drawable.ic_humidity),
+                        contentDescription = "Humidity",
+                        modifier = Modifier.size(20.dp)
+                    )
                     Spacer(Modifier.width(4.dp))
                     Text(text = weatherData.humidity, color = Color.White, fontSize = 16.sp)
                 }
@@ -258,7 +316,11 @@ fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier) {
                 // High/Low Temp
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     // Add a thermostat icon: `ic_thermostat`
-                    Icon(painterResource(id = R.drawable.ic_thermostat), contentDescription = "High/Low temperature", modifier = Modifier.size(20.dp))
+                    Icon(
+                        painterResource(id = R.drawable.ic_thermostat),
+                        contentDescription = "High/Low temperature",
+                        modifier = Modifier.size(20.dp)
+                    )
                     Spacer(Modifier.width(4.dp))
                     Text(text = weatherData.highLow, color = Color.White, fontSize = 16.sp)
                 }
@@ -277,9 +339,9 @@ fun Small_card(
     val context = LocalContext.current
     var isClicked by remember { mutableStateOf(false) }
 
-   // the clicking feature of the buttons
-   // and
-   // layout of the button
+    // the clicking feature of the buttons
+    // and
+    // layout of the button
 
     Card(
         modifier = Modifier
@@ -303,7 +365,7 @@ fun Small_card(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            verticalArrangement = Arrangement.SpaceAround
+            verticalArrangement = SpaceAround
         ) {
             Box(
                 modifier = Modifier
@@ -320,33 +382,193 @@ fun Small_card(
                 )
             }
             Column {
-                Text(text = title, fontWeight = FontWeight.Bold, fontSize = 16.sp, color = Color.Black)
+                Text(
+                    text = title,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp,
+                    color = Color.Black
+                )
                 Text(text = subtitle, fontSize = 12.sp, color = Color.Gray)
             }
         }
     }
 }
 
-// Full preview of the app
-
-@Preview(showBackground = true)
 @Composable
-fun FullScreenPreview() {
-    // preview will show a sample of your full screen
-    val dashboardItems = listOf(
-        DashboardCardItem("Detect Pest", "Take photo to identify", R.drawable.camera, Color(0xFFE53935)),
-        DashboardCardItem("Soil Health", "Check soil condition", R.drawable.leaf, Color(0xFF43A047)),
-        DashboardCardItem("Weather", "7-day forecast", R.drawable.cloud, Color(0xFF1E88E5)),
-        DashboardCardItem("Market Prices", "Today's rates", R.drawable.market, Color(0xFF8D6E63))
-    )
-    SmartCropAdivsorySystemTheme {
-        LazyColumn(horizontalAlignment = Alignment.CenterHorizontally) {
-            item { WarningBanner(message = "Aphid activity reported in nearby farms", modifier = Modifier.padding(16.dp)) }
-            item {
-                LazyVerticalGrid(columns = GridCells.Fixed(2), modifier = Modifier.height(340.dp).padding(8.dp)) {
-                    items(dashboardItems) { item -> Small_card(title = item.title, subtitle = item.subtitle, iconRes = item.iconRes, iconBackgroundColor = item.color) }
+fun Crop_recommendation_card(
+    title: String,
+) {
+    @Composable
+    fun Small_brown_card(){
+        Card(
+            modifier = Modifier
+                .width(350.dp)
+                .height(120.dp)
+                .padding(top = 20.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color(0xFFE8E4DC)
+            )
+        ){}
+    }
+    val context = LocalContext.current
+
+    // the clicking feature of the buttons
+    // and
+    // layout of the button
+
+    Card(
+        modifier = Modifier
+            .padding(8.dp)
+            .width(368.dp)
+            .height(422.dp),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+
+            ) {
+            Row {
+                Image(
+                    painter = painterResource(id = R.drawable.sprout),
+                    contentDescription = "Crop image",
+                    modifier = Modifier.size(20.dp),
+                    colorFilter = ColorFilter.tint(Color(0xFF4B7D5A))
+
+                )
+                Text(
+                    modifier = Modifier.padding(start = 15.dp),
+                    text = title,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 22.sp,
+                    color = Color.Black,
+
+                    )
+            }
+            Column{
+                Small_brown_card()
+                Small_brown_card()
+                Small_brown_card()
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun Market_price_card() {
+    @Composable
+    fun Small_brown_card2(){
+        Card(
+            modifier = Modifier
+                .width(150.dp)
+                .height(120.dp)
+                .padding(top = 20.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color(0xFFE8E4DC)
+            )
+        ){}
+    }
+    Card(
+        modifier = Modifier
+            .padding(8.dp)
+            .width(368.dp)
+            .height(260.dp),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+
+            ) {
+            Row {
+                Image(
+                    painter = painterResource(id = R.drawable.trend),
+                    contentDescription = "Crop image",
+                    modifier = Modifier.size(20.dp),
+
+                    )
+                Text(
+                    modifier = Modifier.padding(start = 15.dp),
+                    text = "Today's Market Prices",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 22.sp,
+                    color = Color.Black,
+
+                    )
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Small_brown_card2()
+                Small_brown_card2()
+            }
+            Row(
+                modifier = Modifier.fillMaxSize()
+                    .padding(top = 20.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ){
+                Button(
+                    modifier = Modifier.width(350.dp)
+                        .height(60.dp),
+                    onClick = {},
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFF7F5F0),
+                        contentColor = Color.Black
+                    )
+                ){
+                    Text(text = "View All Prices",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 19.sp)
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun Footer_btns(){
+    Row(
+        modifier = Modifier.fillMaxSize(),
+        horizontalArrangement = Arrangement.SpaceAround,
+
+    ){
+        Button(
+            onClick = {},
+            modifier = Modifier.size(130.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFF7F5F0),
+                contentColor = Color.Black
+            )
+        ){
+            Text(text = "Help & FeedBack",
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp)
+        }
+        Button(
+            onClick = {},
+            modifier = Modifier.size(130.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFF7F5F0),
+                contentColor = Color.Black
+            )
+        ){
+            Text(text = "Soil Guide",
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp)
         }
     }
 }
