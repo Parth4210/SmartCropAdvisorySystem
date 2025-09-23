@@ -37,6 +37,10 @@ import androidx.compose.ui.unit.sp
 import com.google.android.gms.internal.base.zaq
 import com.samadhanl.smartcropadivsorysystem.ui.theme.SmartCropAdivsorySystemTheme
 import java.util.Calendar
+import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 
 // Data class for the small cards
 data class DashboardCardItem(
@@ -329,6 +333,7 @@ fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier) {
     }
 }
 
+
 @Composable
 fun Small_card(
     title: String,
@@ -337,35 +342,43 @@ fun Small_card(
     iconBackgroundColor: Color
 ) {
     val context = LocalContext.current
-    var isClicked by remember { mutableStateOf(false) }
+    // No need for 'isClicked' state if we only want color change on press
+    // var isClicked by remember { mutableStateOf(false) } // You can remove this line
 
-    // the clicking feature of the buttons
-    // and
-    // layout of the button
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+
+    // Define your colors
+    val defaultCardColor = Color.White
+    val pressedCardColor = Color(0xFF5C896A) // This is the green color from your Figma image
 
     Card(
         modifier = Modifier
             .padding(8.dp)
-            .clickable {
-                isClicked = !isClicked
-                Toast
-                    //after clicking it shows the temp notification.
-                    .makeText(context, "$title Clicked", Toast.LENGTH_SHORT)
-                    .show()
-            }
+            .clickable(
+                interactionSource = interactionSource, // Pass the interactionSource here
+                indication = null, // Set indication to null if you don't want the default ripple
+                onClick = {
+                    // isClicked = !isClicked // No longer needed
+                    Toast
+                        .makeText(context, "$title Clicked", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            )
             .width(160.dp)
             .height(150.dp),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(
-            containerColor = if (isClicked) Color(0xFFE0E0E0) else Color.White
+            // Use isPressed to determine the color
+            containerColor = if (isPressed) pressedCardColor else defaultCardColor
         )
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            verticalArrangement = SpaceAround
+            verticalArrangement = Arrangement.SpaceAround
         ) {
             Box(
                 modifier = Modifier
@@ -377,17 +390,12 @@ fun Small_card(
                 Image(
                     painter = painterResource(id = iconRes),
                     contentDescription = title,
-                    // colorFilter = ColorFilter.tint(Color.White),
+                    // colorFilter = ColorFilter.tint(Color.White), // Keep this if your PNGs are black and you want them white
                     modifier = Modifier.size(24.dp)
                 )
             }
             Column {
-                Text(
-                    text = title,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    color = Color.Black
-                )
+                Text(text = title, fontWeight = FontWeight.Bold, fontSize = 16.sp, color = Color.Black)
                 Text(text = subtitle, fontSize = 12.sp, color = Color.Gray)
             }
         }
@@ -554,9 +562,9 @@ fun Footer_btns(){
                 contentColor = Color.Black
             )
         ){
-            Text(text = "Help & FeedBack",
+            Text(text = "Contact Us",
                 fontWeight = FontWeight.Bold,
-                fontSize = 18.sp)
+                fontSize = 16.sp)
         }
         Button(
             onClick = {},
@@ -568,7 +576,7 @@ fun Footer_btns(){
         ){
             Text(text = "Soil Guide",
                 fontWeight = FontWeight.Bold,
-                fontSize = 18.sp)
+                fontSize = 16.sp)
         }
     }
 }
