@@ -41,7 +41,7 @@ fun Small_card(title: String, subtitle: String, iconRes: Int, iconBackgroundColo
     val pressedCardColor = Color(0xFF5C896A)
 
     Card(
-        modifier = Modifier.padding(8.dp).clickable(interactionSource = interactionSource, indication = null, onClick = { Toast.makeText(context, "$title Clicked", Toast.LENGTH_SHORT).show() }).width(160.dp).height(150.dp),
+        modifier = Modifier.padding(8.dp).clickable(interactionSource = interactionSource, indication = null, onClick = {}).width(160.dp).height(150.dp),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(containerColor = if (isPressed) pressedCardColor else defaultCardColor)

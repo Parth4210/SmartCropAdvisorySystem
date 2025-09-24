@@ -9,6 +9,9 @@ import com.samadhanl.smartcropadivsorysystem.Components.LoginFlow
 
 
 @Composable
+
+//Here is the APP FLOW
+
 fun AppNavigator() {
     val navController = rememberNavController()
 
