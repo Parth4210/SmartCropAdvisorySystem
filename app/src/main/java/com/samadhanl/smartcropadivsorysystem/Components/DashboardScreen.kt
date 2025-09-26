@@ -30,14 +30,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.samadhanl.smartcropadivsorysystem.Components.CropRecommendationCard
-
-import com.samadhanl.smartcropadivsorysystem.Components.FooterBtns
-import com.samadhanl.smartcropadivsorysystem.Components.MarketPriceCard
+import androidx.navigation.NavHostController
 import com.samadhanl.smartcropadivsorysystem.R
-import com.samadhanl.smartcropadivsorysystem.Components.Small_card
-import com.samadhanl.smartcropadivsorysystem.Components.WarningBanner
-import com.samadhanl.smartcropadivsorysystem.Components.WeatherCard
 import java.util.Calendar
 
 // ===================================================================
@@ -45,16 +39,49 @@ import java.util.Calendar
 // ===================================================================
 
 // --- Data for Dashboard ---
-data class DashboardCardItem(val title: String, val subtitle: String, val iconRes: Int, val color: Color)
-data class WeatherData(val temperature: String = "28°C", val condition: String = "Partly Cloudy", val humidity: String = "65%", val highLow: String = "32°/24°")
+data class DashboardCardItem(
+    val title: String,
+    val subtitle: String,
+    val iconRes: Int,
+    val color: Color
+)
+
+data class WeatherData(
+    val temperature: String = "28°C",
+    val condition: String = "Partly Cloudy",
+    val humidity: String = "65%",
+    val highLow: String = "32°/24°"
+)
+
+sealed class Screen(val route: String) {
+    object Dashboard : Screen("dashboard_screen")
+    object PestDetection : Screen("pest_detection_screen")
+    object SoilHealth : Screen("soil_health_screen")
+    object Weather : Screen("weather_screen")
+    object MarketPrices : Screen("market_prices_screen")
+}
 
 // --- Main Composable for the Dashboard ---
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DashboardScreen() {
+fun DashboardScreen(navController: NavHostController) {
+    // This is the main UI for your dashboard.
+    // The NavHost that navigates to this screen should be in a different file,
+    // like MainActivity.kt or a dedicated AppNavigation.kt file.
+
     val dashboardItems = listOf(
-        DashboardCardItem("Detect Pest", "Take photo to identify", R.drawable.camera, Color(0xFFE53935)),
-        DashboardCardItem("Soil Health", "Check soil condition", R.drawable.leaf, Color(0xFF43A047)),
+        DashboardCardItem(
+            "Detect Pest",
+            "Take photo to identify",
+            R.drawable.camera,
+            Color(0xFFFFFFF)
+        ),
+        DashboardCardItem(
+            "Soil Health",
+            "Check soil condition",
+            R.drawable.leaf,
+            Color(0xFF43A047)
+        ),
         DashboardCardItem("Weather", "7-day forecast", R.drawable.cloud, Color(0xFF1E88E5)),
         DashboardCardItem("Market Prices", "Today's rates", R.drawable.market, Color(0xFF8D6E63))
     )
@@ -82,37 +109,80 @@ fun DashboardScreen() {
                 },
                 actions = {
                     IconButton(onClick = { /* TODO: Settings action */ }) {
-                        Image(painter = painterResource(id = R.drawable.settings_icon), contentDescription = "Settings Icon", modifier = Modifier.size(25.dp), colorFilter = ColorFilter.tint(Color.White))
+                        Image(
+                            painter = painterResource(id = R.drawable.settings_icon),
+                            contentDescription = "Settings Icon",
+                            modifier = Modifier.size(25.dp),
+                            colorFilter = ColorFilter.tint(Color.White)
+                        )
                     }
                     IconButton(onClick = { /* TODO: User profile action */ }) {
-                        Image(painter = painterResource(id = R.drawable.user_icon), contentDescription = "User Icon", modifier = Modifier.size(25.dp), colorFilter = ColorFilter.tint(Color.White))
+                        Image(
+                            painter = painterResource(id = R.drawable.user_icon),
+                            contentDescription = "User Icon",
+                            modifier = Modifier.size(25.dp),
+                            colorFilter = ColorFilter.tint(Color.White)
+                        )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color(0xFF4A7C59), titleContentColor = Color.White, actionIconContentColor = Color.White)
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color(0xFF4A7C59),
+                    titleContentColor = Color.White,
+                    actionIconContentColor = Color.White
+                )
             )
         },
         containerColor = Color(0xFFF7F5F0)
     ) { innerPadding ->
         LazyColumn(
-            modifier = Modifier.fillMaxSize().padding(innerPadding),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
             contentPadding = PaddingValues(bottom = 16.dp)
         ) {
             item { WeatherCard(weatherData = WeatherData()) }
-            item { WarningBanner(message = "Aphid activity reported in nearby farms", modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)) }
-            item { WarningBanner(message = "Heavy rain expected in 10 days", modifier = Modifier.padding(16.dp)) }
+            item {
+                WarningBanner(
+                    message = "Aphid activity reported in nearby farms",
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp)
+                )
+            }
+            item {
+                WarningBanner(
+                    message = "Heavy rain expected in 10 days",
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
 
             // Grid of four dashboard cards
             item {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
-                    modifier = Modifier.height(360.dp).padding(8.dp),
+                    modifier = Modifier
+                        .height(360.dp)
+                        .padding(8.dp),
                     horizontalArrangement = Arrangement.Center,
                     verticalArrangement = Arrangement.Center,
                     userScrollEnabled = false // Disable scrolling for the inner grid
                 ) {
                     items(dashboardItems) { item ->
-                        Small_card(title = item.title, subtitle = item.subtitle, iconRes = item.iconRes, iconBackgroundColor = item.color)
+                        Small_card(
+                            title = item.title,
+                            subtitle = item.subtitle,
+                            iconRes = item.iconRes,
+                            iconBackgroundColor = item.color,
+                            onClick = {
+                                val route = when (item.title) {
+                                    "Detect Pest" -> Screen.PestDetection.route
+                                    "Soil Health" -> Screen.SoilHealth.route
+                                    "Weather" -> Screen.Weather.route
+                                    "Market Prices" -> Screen.MarketPrices.route
+                                    else -> Screen.Dashboard.route
+                                }
+                                navController.navigate(route)
+                            }
+                        )
                     }
                 }
             }

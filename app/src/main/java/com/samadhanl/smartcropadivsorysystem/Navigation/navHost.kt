@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.samadhanl.smartcropadivsorysystem.Components.DashboardScreen
 import com.samadhanl.smartcropadivsorysystem.Components.LoginFlow
+import com.samadhanl.smartcropadivsorysystem.Components.WeatherPage
 
 
 @Composable
@@ -22,7 +23,10 @@ fun AppNavigator() {
         }
         // Route for the main dashboard screen
         composable("dashboard") {
-            DashboardScreen()
+            DashboardScreen(navController = navController)
+        }
+        composable("weatherUpdates"){
+            WeatherPage()
         }
     }
 }

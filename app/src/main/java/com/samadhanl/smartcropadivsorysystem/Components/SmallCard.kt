@@ -1,6 +1,5 @@
 package com.samadhanl.smartcropadivsorysystem.Components
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,7 +32,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun Small_card(title: String, subtitle: String, iconRes: Int, iconBackgroundColor: Color) {
+fun Small_card(
+    title: String,
+    subtitle: String,
+    iconRes: Int,
+    iconBackgroundColor: Color,
+    onClick: () -> Unit
+) {
     val context = LocalContext.current
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
