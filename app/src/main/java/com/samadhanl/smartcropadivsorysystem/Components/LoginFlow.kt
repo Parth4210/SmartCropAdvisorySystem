@@ -4,6 +4,7 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.samadhanl.smartcropadivsorysystem.MarketPriceScreen
 import com.samadhanl.smartcropadivsorysystem.ViewModel.AuthViewModel
 //import com.samadhanl.smartcropadivsorysystem.Components.SoilHealthScreen // <-- Add this import statement
 import com.samadhanl.smartcropadivsorysystem.SoilHealthScreen
@@ -18,8 +19,9 @@ fun LoginFlow(navController: NavController, authViewModel: AuthViewModel = viewM
         } else {
             // --- TEMPORARY CHANGE FOR TESTING ---
             // Directly showing SoilHealthScreen and skipping login.
-            SoilHealthScreen(onNavigateBack = { }) // You need to provide any required parameters like this.
-
+            //SoilHealthScreen(onNavigateBack = { }) // You need to provide any required parameters like this.
+            MarketPriceScreen(onNavigateBack = { navController.popBackStack() })
+            }
             /* <-- Start of comment
             // The original LoginScreen is now commented out.
             LoginScreen(
@@ -38,4 +40,3 @@ fun LoginFlow(navController: NavController, authViewModel: AuthViewModel = viewM
             */ // <-- End of comment
         }
     }
-}
