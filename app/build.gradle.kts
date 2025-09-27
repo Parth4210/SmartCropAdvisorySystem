@@ -64,6 +64,7 @@ dependencies {
     //For Location Services
 
     implementation("com.google.android.gms:play-services-location:21.2.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.0")
     //
     //// For Networking (for API calls)
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -71,6 +72,7 @@ dependencies {
     implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.2")
     implementation("androidx.compose.material:material-icons-extended")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.0")
 
 
 
