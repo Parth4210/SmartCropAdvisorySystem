@@ -183,6 +183,7 @@ fun AuthFooter() {
 }
 
 
+
 @Preview(showBackground = true)
 @Composable
 fun RegistrationScreenPreview() {

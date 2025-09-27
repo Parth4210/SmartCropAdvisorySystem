@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.update
 import android.util.Patterns
 
 
+
 // This data class holds the current state of the registration form
 data class RegistrationUiState(
     val fullName: String = "",
